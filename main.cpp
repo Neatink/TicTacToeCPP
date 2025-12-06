@@ -13,32 +13,21 @@ struct Player{
 	char symbol;
 };
 
+void createPlayer(struct Player *player, const int number) {
+	cout << "Player" << number << " name: ";
+	cin >> player->name;
+	cout << "Player" << number << " symbol: ";
+	cin >> player->symbol;
+
+	cout << "Player" << number << " created!\n";
+}
+
 int main() {
-	string* player1_name = new string;
-	char* player1_symbol = new char;
+	Player Player1;
+	Player Player2;
 
-	cout << "Player1 name: ";
-	cin >> *player1_name;
-	cout << "Player1 symbol: ";
-	cin >> *player1_symbol;
-
-	Player Player1 = {*player1_name,*player1_symbol};
-	cout << "Player1 created!\n";
-	delete player1_name, player1_symbol;
-
-
-	string* player2_name = new string;
-	char* player2_symbol = new char;
-
-	cout << "Player2 name: ";
-	cin >> *player2_name;
-	cout << "Player2 symbol: ";
-	cin >> *player2_symbol;
-
-
-	Player Player2 = {*player2_name, *player2_symbol};
-	cout << "Player2 created!\n";
-	delete player2_name, player2_symbol;
+	createPlayer(&Player1, 1);
+	createPlayer(&Player2, 2);
 
 	cout << "Go play!\n";
 
