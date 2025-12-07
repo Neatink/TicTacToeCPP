@@ -9,19 +9,17 @@ char table[3][3] = {
 };
 
 struct Player{
-	uint16_t number;
 	string name;
 	char symbol;
 };
 
-void createPlayer(Player &player, const uint16_t number) {
-	player.number = number;
+void createPlayer(Player &player, const int number) {
 	cout << "Player " << number << " name: ";
 	cin >> player.name;
 	cout << "Player " << number << " symbol: ";
 	cin >> player.symbol;
 
-	cout << "Player " << number << " created!\n";
+	cout << "Player " << number << '(' << player.name << ')' << " created!\n";
 }
 
 void outGameTable(char (&table)[3][3]) {
@@ -33,19 +31,36 @@ void outGameTable(char (&table)[3][3]) {
 	}
 }
 
-void playerMove(Player &player) {
-	uint16_t column, row, sum;
-	cout << "Player " << player.number << ", enter column and row(example: 1 3): ";
+bool checkPlayerMove(char (&table)[3][3], int column, int row) {
+	if (table[column][row] == '#') {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool playerMove(Player &player) {
+	int column, row, sum;
+	cout << "Player " << player.name << ", enter column and row(example: 1 3): ";
 	cin >> column >> row;
 	sum = column + row;
+	column -= 1; row -= 1;
 	if ((sum >= 2) && (sum <= 6)) {
-		table[column - 1][row - 1] = player.symbol;
-		outGameTable(table);
+		if (checkPlayerMove(table, column, row)) {
+			table[column][row] = player.symbol;
+			outGameTable(table);
+		}
+		else {
+			cout << "This cell is occupied!\nTry again!\n";
+			playerMove(player);
+		}
 	}
 	else {
 		cout << "Incorrect column or row!\nTry again.\n";
-		return;
+		playerMove(player);
 	}
+	return true;
 }
 
 int main() {
@@ -60,7 +75,12 @@ int main() {
 	outGameTable(table);
 	
 	while (true) {
-		playerMove(Player1);
+		if (playerMove(Player1)) {
+			playerMove(Player2);
+		}
+		else {
+			playerMove(Player1);
+		}
 	}
 
 	return 0;
