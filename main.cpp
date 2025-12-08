@@ -40,6 +40,25 @@ bool checkPlayerMove(char (&table)[3][3], int column, int row) {
 	}
 }
 
+bool checkPlayerWin(Player& player) {
+	for (int i = 0; i < 3; i++) {
+		if (table[i][0] == player.symbol && table[i][1] == player.symbol && table[i][2] == player.symbol) {
+			return true;
+		}
+		else if (table[0][i] == player.symbol && table[1][i] == player.symbol && table[2][i] == player.symbol) {
+			return true;
+		}
+	}
+	if (table[0][0] == player.symbol && table[1][1] == player.symbol && table[2][2] == player.symbol) {
+		return true;
+	}
+	if (table[2][0] == player.symbol && table[1][1] == player.symbol && table[0][2] == player.symbol) {
+		return true;
+	}
+
+	return false;
+}
+
 bool playerMove(Player &player) {
 	int column, row, sum;
 	cout << "Player " << player.name << ", enter column and row(example: 1 3): ";
@@ -76,9 +95,17 @@ int main() {
 	
 	while (true) {
 		if (playerMove(Player1)) {
+			if (checkPlayerWin(Player1)) {
+				cout << Player1.name << " Win!";
+				break;
+			}
 			playerMove(Player2);
 		}
 		else {
+			if (checkPlayerWin(Player2)) {
+				cout << Player2.name << " Win!";
+				break;
+			}
 			playerMove(Player1);
 		}
 	}
