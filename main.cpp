@@ -2,11 +2,13 @@
 
 using namespace std;
 
+int moves = 0;
+
 char table[3][3] = {
 	'#','#','#',
 	'#','#','#',
 	'#','#','#'
-};
+	};
 
 struct Player{
 	string name;
@@ -59,6 +61,14 @@ bool checkPlayerWin(Player& player) {
 	return false;
 }
 
+bool checkOnDraw() {
+	if (moves == 9) {
+		cout << "Draw!";
+		return true;
+	}
+	return false;
+}
+
 bool playerMove(Player &player) {
 	int column, row, sum;
 	cout << "Player " << player.name << ", enter column and row(example: 1 3): ";
@@ -69,6 +79,8 @@ bool playerMove(Player &player) {
 		if (checkPlayerMove(table, column, row)) {
 			table[column][row] = player.symbol;
 			outGameTable(table);
+			moves++;
+			return true;
 		}
 		else {
 			cout << "This cell is occupied!\nTry again!\n";
@@ -79,7 +91,6 @@ bool playerMove(Player &player) {
 		cout << "Incorrect column or row!\nTry again.\n";
 		playerMove(player);
 	}
-	return true;
 }
 
 int main() {
@@ -92,11 +103,14 @@ int main() {
 	cout << "Go play!\n";
 
 	outGameTable(table);
-	
+
 	while (true) {
 		if (playerMove(Player1)) {
 			if (checkPlayerWin(Player1)) {
 				cout << Player1.name << " Win!";
+				break;
+			}
+			if (checkOnDraw()) {
 				break;
 			}
 			playerMove(Player2);
@@ -104,6 +118,9 @@ int main() {
 		else {
 			if (checkPlayerWin(Player2)) {
 				cout << Player2.name << " Win!";
+				break;
+			}
+			if (checkOnDraw()) {
 				break;
 			}
 			playerMove(Player1);
