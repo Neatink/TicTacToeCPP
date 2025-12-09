@@ -70,26 +70,25 @@ bool checkOnDraw() {
 }
 
 bool playerMove(Player &player) {
-	int column, row, sum;
-	cout << "Player " << player.name << ", enter column and row(example: 1 3): ";
-	cin >> column >> row;
-	sum = column + row;
-	column -= 1; row -= 1;
-	if ((sum >= 2) && (sum <= 6)) {
-		if (checkPlayerMove(table, column, row)) {
-			table[column][row] = player.symbol;
-			outGameTable(table);
-			moves++;
-			return true;
+	while (true){
+		int column, row;
+		cout << "Player " << player.name << ", enter column and row(example: 1 3): ";
+		cin >> column >> row;
+		column -= 1; row -= 1;
+		if (column >= 0 && column <= 2 && row >= 0 && row <= 2) {
+			if (checkPlayerMove(table, column, row)) {
+				table[column][row] = player.symbol;
+				outGameTable(table);
+				moves++;
+				return true;
+			}
+			else {
+				cout << "This cell is occupied!\nTry again!\n";
+			}
 		}
 		else {
-			cout << "This cell is occupied!\nTry again!\n";
-			playerMove(player);
+			cout << "Incorrect column or row!\nTry again.\n";
 		}
-	}
-	else {
-		cout << "Incorrect column or row!\nTry again.\n";
-		playerMove(player);
 	}
 }
 
